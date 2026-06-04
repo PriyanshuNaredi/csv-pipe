@@ -40,3 +40,9 @@ jobs:
 
       - name: Build
         run: npm run build
+
+      - name: Check package exports
+        run: npx publint --strict
+
+      - name: Check type resolution
+        run: npx attw --pack .

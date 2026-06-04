@@ -59,3 +59,5 @@ A complete rewrite into a fast, deterministic, RFC 4180-compliant CSV encoder.
   Node 18, 20, and 22.
 - The encoder precompiles its quote test and escape and encodes rows in a tight
   loop, making it the fastest of the benchmarked encoders on every dataset.
+- CI verifies the published package with publint and checks type resolution
+  across module modes with are-the-types-wrong.
