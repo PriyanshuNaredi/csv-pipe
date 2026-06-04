@@ -1,7 +1,0 @@
-/src
-.prettierrc
-.prettierignore
-.gitignore
-tsconfig.json
-package-lock.json
-node_modules

@@ -1,15 +1,7 @@
-export class WrongValueFormatError extends Error {
+/** Base class for every error thrown by csv-pipe. */
+export class CsvPipeError extends Error {
   constructor(message: string) {
     super(message);
-
-    this.name = 'WrongValueFormatError';
+    this.name = 'CsvPipeError';
   }
 }
-
-export const createErrorMessage = (
-  message: string,
-  actual: string,
-  expected: string
-) => {
-  return `\n\n${message}\n\nActual: ${actual}\n\nExpected: ${expected}\n`;
-};
