@@ -90,6 +90,7 @@
     "lint:fix": "eslint . --fix",
     "prepublishOnly": "npm run build",
     "size": "npm run build && size-limit",
+    "smoke": "node scripts/smoke.mjs",
     "test": "vitest run",
     "test:watch": "vitest",
     "typecheck": "tsc --noEmit"

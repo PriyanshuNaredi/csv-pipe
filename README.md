@@ -178,6 +178,12 @@ csv-pipe leads by about 1.5x on the small, wide, and large datasets, and edges p
 
 The figure is also tracked over time on a [live chart](https://martsinlabs.github.io/csv-pipe/bench/): CI publishes it on every push to `master` and flags a pull request that regresses. The badges at the top of this page read from that data, so the throughput and last-updated date always reflect the latest run. Generate the data locally with `npm run build && npm run bench:track`.
 
+## Contributing
+
+Contributions are welcome. See [CONTRIBUTING](CONTRIBUTING.md) for setup and
+conventions, [CODE_OF_CONDUCT](CODE_OF_CONDUCT.md) for community standards, and
+[SECURITY](SECURITY.md) for reporting vulnerabilities.
+
 ## License
 
 MIT (c) Martsin Labs. See [LICENSE](LICENSE).
