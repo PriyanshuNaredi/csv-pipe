@@ -14,7 +14,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: [18, 20, 22]
+        # Vitest 4 requires Node 20.12+; Node 18 runtime support is checked by
+        # the node18 job below (build + smoke), which does not run Vitest.
+        node-version: [20, 22, 24]
     name: Node ${{ matrix.node-version }}
     steps:
       - uses: actions/checkout@v4
@@ -55,6 +57,25 @@ jobs:
 
       - name: Check bundle size
         run: npx size-limit
+
+  node18:
+    name: Node 18 (runtime)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: npm
+
+      - run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Smoke test (Node)
+        run: npm run smoke
 
   deno:
     name: Smoke (Deno)
