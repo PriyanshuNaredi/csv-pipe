@@ -1,0 +1,21 @@
+/* Brand color: a green ramp that replaces the default VitePress indigo. */
+:root {
+  --vp-c-brand-1: #2c7a32;
+  --vp-c-brand-2: #3c7d3a;
+  --vp-c-brand-3: #46974a;
+  --vp-c-brand-soft: rgba(60, 125, 58, 0.14);
+
+  --vp-button-brand-bg: var(--vp-c-brand-2);
+  --vp-button-brand-hover-bg: var(--vp-c-brand-1);
+  --vp-button-brand-active-bg: var(--vp-c-brand-1);
+}
+
+.dark {
+  --vp-c-brand-1: #74d06f;
+  --vp-c-brand-2: #5cbb58;
+  --vp-c-brand-3: #4aa247;
+  --vp-c-brand-soft: rgba(74, 162, 71, 0.16);
+
+  --vp-button-brand-bg: var(--vp-c-brand-3);
+  --vp-button-brand-hover-bg: var(--vp-c-brand-2);
+}

@@ -6,12 +6,17 @@ All notable changes to this project are documented here. The format follows
 
 ## 2.0.0 - 2026-06-04
 
-A complete rewrite into a fast, deterministic, RFC 4180-compliant CSV encoder.
+A complete rewrite into a fast, deterministic, RFC 4180-compliant CSV encoder and parser.
 
 ### Added
 
 - `stringify(data, options)` for the common case, and `createCsvEncoder(options)`,
   a callable encoder with `row` and `stream` (an `AsyncIterable`).
+- `parse(text, options)` and `createCsvParser(options)`, the mirror of the
+  encoder: typed records, a `stream` method that accepts strings, iterables, byte
+  chunks, or a Web `ReadableStream` with flat memory, and options for `columns`,
+  `separator` (with `'auto'` detection), `dynamicTyping`, `skipEmptyLines`,
+  `comment`, `trim`, `strict`, `maxRows`, and a `row` validation hook.
 - `toReadableStream`, which adapts a stream to a Web `ReadableStream`.
 - Platform entry points: `csv-pipe/browser` exports `downloadCsv`, and
   `csv-pipe/node` exports `writeCsv`. The core entry stays platform-neutral.

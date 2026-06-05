@@ -1,3 +1,8 @@
+/**
+ * Browser helpers, imported from `csv-pipe/browser`.
+ *
+ * @module csv-pipe/browser
+ */
 import { stringify } from '../encode/stringify';
 import type { CsvOptions, CsvRecord } from '../types';
 

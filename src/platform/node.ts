@@ -1,3 +1,8 @@
+/**
+ * Node helpers, imported from `csv-pipe/node`.
+ *
+ * @module csv-pipe/node
+ */
 import { createWriteStream } from 'node:fs';
 import { Readable } from 'node:stream';
 import { pipeline } from 'node:stream/promises';

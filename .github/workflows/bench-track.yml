@@ -8,6 +8,11 @@ on:
 permissions:
   contents: write
 
+# Serialize with the docs job, which also pushes to gh-pages.
+concurrency:
+  group: gh-pages
+  cancel-in-progress: false
+
 jobs:
   track:
     runs-on: ubuntu-latest

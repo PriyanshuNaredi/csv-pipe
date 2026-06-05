@@ -1,3 +1,9 @@
+/**
+ * The main entry point, imported from `csv-pipe`. Encoding and streaming for
+ * every runtime.
+ *
+ * @module csv-pipe
+ */
 export { createCsvEncoder } from './core/encoder';
 export { createCsvParser } from './core/parser';
 export { parse } from './decode/parse';
