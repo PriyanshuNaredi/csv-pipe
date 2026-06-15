@@ -1,37 +1,145 @@
 {
   "name": "csv-pipe",
-  "version": "1.3.1",
-  "description": "",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "type": "module",
-  "scripts": {
-    "build": "rm -rf dist && esbuild index.ts --bundle --outdir=dist --minify --format=esm && tsc --declaration --emitDeclarationOnly",
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "version": "2.0.0",
+  "description": "A small, fast, zero-dependency CSV encoder and parser for TypeScript and JavaScript. It converts between arrays of objects and RFC 4180-compliant CSV, with typed streaming in both directions, and runs in Node, browsers, Deno, Bun, and edge runtimes.",
+  "keywords": [
+    "csv",
+    "rfc4180",
+    "stringify",
+    "parse",
+    "parser",
+    "encode",
+    "decode",
+    "data",
+    "export",
+    "convert",
+    "transform",
+    "stream",
+    "typescript"
+  ],
+  "homepage": "https://github.com/martsinlabs/csv-pipe#readme",
+  "bugs": {
+    "url": "https://github.com/martsinlabs/csv-pipe/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/myroslavmartsin/csv-pipe.git"
+    "url": "git+https://github.com/martsinlabs/csv-pipe.git"
   },
+  "license": "MIT",
   "author": "Myroslav Martsin",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/myroslavmartsin/csv-pipe/issues"
+  "sideEffects": false,
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    },
+    "./browser": {
+      "import": {
+        "types": "./dist/browser.d.ts",
+        "default": "./dist/browser.js"
+      },
+      "require": {
+        "types": "./dist/browser.d.cts",
+        "default": "./dist/browser.cjs"
+      }
+    },
+    "./node": {
+      "import": {
+        "types": "./dist/node.d.ts",
+        "default": "./dist/node.js"
+      },
+      "require": {
+        "types": "./dist/node.d.cts",
+        "default": "./dist/node.cjs"
+      }
+    }
   },
-  "homepage": "https://github.com/myroslavmartsin/csv-pipe#readme",
-  "keywords": [
-    "csv",
-    "data",
-    "export",
-    "generate",
-    "convert",
-    "transform",
-    "download",
-    "javascript"
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "typesVersions": {
+    "*": {
+      "browser": [
+        "./dist/browser.d.ts"
+      ],
+      "node": [
+        "./dist/node.d.ts"
+      ]
+    }
+  },
+  "files": [
+    "dist",
+    "CHANGELOG.md"
   ],
+  "scripts": {
+    "bench": "vitest bench --run",
+    "bench:gate": "node bench/assert-fastest.mjs",
+    "bench:track": "node bench/track.mjs",
+    "build": "tsup && npm run build:dts",
+    "build:dts": "dts-bundle-generator --config dts-bundle-generator.config.cjs && cp dist/index.d.ts dist/index.d.cts && cp dist/browser.d.ts dist/browser.d.cts && cp dist/node.d.ts dist/node.d.cts",
+    "check:package": "npm run build && publint --strict && attw --pack .",
+    "coverage": "vitest run --coverage",
+    "dev": "tsup --watch",
+    "docs:api": "typedoc",
+    "docs:build": "npm run docs:api && vitepress build docs",
+    "docs:dev": "npm run docs:api && vitepress dev docs",
+    "docs:preview": "vitepress preview docs",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "og": "node scripts/og.mjs",
+    "prepublishOnly": "npm run build",
+    "size": "npm run build && size-limit",
+    "smoke": "node scripts/smoke.mjs",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "typecheck:examples": "tsc -p tsconfig.examples.json"
+  },
   "devDependencies": {
-    "esbuild": "^0.19.5",
-    "prettier": "3.0.3",
-    "typescript": "^5.2.2"
+    "@arethetypeswrong/cli": "^0.18.3",
+    "@resvg/resvg-js": "^2.6.2",
+    "@shikijs/vitepress-twoslash": "^4.2.0",
+    "@size-limit/preset-small-lib": "^12.1.0",
+    "@types/node": "^24.0.0",
+    "@types/papaparse": "^5.3.0",
+    "@vitest/coverage-v8": "^4.1.8",
+    "csv-parse": "^6.2.1",
+    "csv-stringify": "^6.7.0",
+    "dts-bundle-generator": "^9.5.1",
+    "eslint": "^10.4.1",
+    "fast-check": "^4.8.0",
+    "fast-csv": "^5.0.7",
+    "jsdom": "^29.1.1",
+    "papaparse": "^5.5.3",
+    "prettier": "^3.8.3",
+    "prettier-plugin-organize-imports": "^4.3.0",
+    "prettier-plugin-packagejson": "^3.0.2",
+    "publint": "^0.3.21",
+    "size-limit": "^12.1.0",
+    "tinybench": "^6.0.2",
+    "tsup": "^8.5.1",
+    "typedoc": "^0.28.19",
+    "typedoc-plugin-markdown": "^4.12.0",
+    "typedoc-vitepress-theme": "^1.1.3",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.60.1",
+    "vitepress": "^1.6.4",
+    "vitest": "^4.1.8"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
   }
 }

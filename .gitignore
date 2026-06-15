@@ -1,2 +1,38 @@
+# Dependencies
 node_modules
+
+# Build output
 dist
+
+# Docs: generated API markdown and VitePress build output
+docs/api
+docs/.vitepress/cache
+docs/.vitepress/dist
+
+# Test coverage
+coverage
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Caches
+.cache
+*.tsbuildinfo
+
+# Benchmark and badge output (root-level only, published to gh-pages by CI).
+# Anchored with a leading slash so it does not also ignore docs/public assets.
+size.json
+/public
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+*.swp

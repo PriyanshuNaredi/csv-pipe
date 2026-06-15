@@ -1,106 +1,69 @@
-# CSV-Pipe: Easy Data-to-CSV Conversion
+# csv-pipe
 
-CSV-Pipe is a versatile TypeScript/JavaScript library that effortlessly converts data into the CSV file format for both front-end and back-end applications. It is lightweight and designed for simplicity, enabling the seamless transformation of arrays of objects into CSV format.
+[![CI](https://img.shields.io/github/actions/workflow/status/martsinlabs/csv-pipe/ci.yml?branch=master&label=CI)](https://github.com/martsinlabs/csv-pipe/actions/workflows/ci.yml) [![coverage](https://img.shields.io/endpoint?url=https%3A%2F%2Fmartsinlabs.github.io%2Fcsv-pipe%2Fcoverage-badge.json)](https://github.com/martsinlabs/csv-pipe/actions/workflows/ci.yml) [![bundle size](https://img.shields.io/endpoint?url=https%3A%2F%2Fmartsinlabs.github.io%2Fcsv-pipe%2Fsize-badge.json)](https://martsinlabs.github.io/csv-pipe/guide/benchmarks) [![encode throughput](https://img.shields.io/endpoint?url=https%3A%2F%2Fmartsinlabs.github.io%2Fcsv-pipe%2Fencode-badge.json)](https://martsinlabs.github.io/csv-pipe/guide/benchmarks) [![parse throughput](https://img.shields.io/endpoint?url=https%3A%2F%2Fmartsinlabs.github.io%2Fcsv-pipe%2Fparse-badge.json)](https://martsinlabs.github.io/csv-pipe/guide/benchmarks)
 
-## Installation
+A small, fast, zero-dependency CSV encoder and parser for TypeScript and JavaScript. It converts between arrays of objects and RFC 4180-compliant CSV, and runs in Node, browsers, Deno, Bun, and edge runtimes.
+
+**[Documentation](https://martsinlabs.github.io/csv-pipe/)** · [Guide](https://martsinlabs.github.io/csv-pipe/guide/getting-started) · [API](https://martsinlabs.github.io/csv-pipe/api/) · [Benchmarks](https://martsinlabs.github.io/csv-pipe/guide/benchmarks)
+
+## Install
 
 ```
-npm install --save csv-pipe
+npm install csv-pipe
 ```
 
-## Usage Guide
+## Usage
 
-This section is dedicated to helping you integrate CSV-Pipe into your project with ease. Below, you'll find step-by-step instructions and code snippets that demonstrate how to convert your data into CSV format using our library.
+Encode an array of objects into CSV:
 
-#### Front-end
+```ts
+import { stringify } from 'csv-pipe';
 
-```typescript
-import { CsvPipe, CpDataset, cpDownload } from 'csv-pipe';
-
-// Instantiate CsvPipe with configuration options
-const csvPipe = new CsvPipe({
-  filename: 'active_users_october', // Optional: Specify file name
-  headers: ['Name', 'Email', 'Age'] // Optional: Specify CSV column headers
-});
-
-const data: CpDataset = [
-  {
-    name: 'Alex Johnson',
-    email: 'alex.johnson@example.com',
-    age: 29
-  },
-  {
-    name: 'Carlos Herrera',
-    email: 'carlos.h24@example.com',
-    age: 24
-  }
-];
-
-// Convert your Array to CSV format
-const result = csvPipe.generate(data);
-
-// Download the resulting data as a CSV or TXT file. If you require the output in TXT format, specify 'txt' as the second parameter
-cpDownload(result);
+stringify([
+  { name: 'Alex Johnson', email: 'alex@example.com', age: 29 },
+  { name: 'Carlos Herrera', email: 'carlos@example.com', age: 24 }
+]);
+// name,email,age
+// Alex Johnson,alex@example.com,29
+// Carlos Herrera,carlos@example.com,24
 ```
 
-#### Back-end
+And parse it back into typed records:
 
-```typescript
-import { CsvPipe } from 'csv-pipe';
-import { writeFile } from 'fs';
+```ts
+import { parse } from 'csv-pipe';
 
-// Instantiate CsvPipe with configuration options
-const csvPipe = new CsvPipe({
-  filename: 'active_users_october', // Optional: Specify file name
-  headers: ['Name', 'Email', 'Age'] // Optional: Specify CSV column headers
-});
+type User = { name: string; email: string; age: number };
 
-const data = [
-  {
-    name: 'Alex Johnson',
-    email: 'alex.johnson@example.com',
-    age: 29
-  },
-  {
-    name: 'Carlos Herrera',
-    email: 'carlos.h24@example.com',
-    age: 24
-  }
-];
-
-// Convert your Array to CSV format
-const result = csvPipe.generate(data);
-
-// Write the csv file
-writeFile(`${result.filename}.csv`, result.data, (error) => {
-  if (error) throw new Error(error);
-
-  console.log(`${result.filename} successfully saved!`);
-});
+parse<User>('name,email,age\nAlex Johnson,alex@example.com,29');
+// [{ name: 'Alex Johnson', email: 'alex@example.com', age: '29' }]
 ```
 
-#### Config Table
+The header comes from the record keys, quoting and escaping are correct out of the box, and both directions stream and run in every runtime.
 
-| Option         | Description                                              | Default Value                      | Accepted Value                    |
-| -------------- | -------------------------------------------------------- | ---------------------------------- | --------------------------------- |
-| `separator`    | Character for field separation, typically a comma        | `,`                                | `string`                          |
-| `filename`     | The name assigned to the CSV file                        | Generated Randomly                 | `string`                          |
-| `headers`      | List of strings for CSV column headers                   | `[]`                               | `Array<string>`                   |
-| `quote`        | Character to wrap around values                          | `"`                                | `string`                          |
-| `autoHeaders`  | Whether to generate headers from data keys automatically | `false`                            | `boolean`                         |
-| `showHeaders`  | Whether to include headers in the CSV output             | `true`                             | `boolean`                         |
-| `infinityText` | Representation for Infinity values in CSV                | `"Infinity"`                       | `string`                          |
-| `nullDisplay`  | Text representation for null values                      | `"null"`                           | `string`                          |
-| `undefDisplay` | Text for undefined values                                | `"undefined"`                      | `string`                          |
-| `boolStyle`    | Text mappings for true and false values                  | `{ true: "TRUE", false: "FALSE" }` | `{ true: string, false: string }` |
-| `charset`      | Encoding for the CSV file                                | `"utf8"`                           | `string`                          |
-| `newLine`      | Characters used for line breaks in CSV                   | `"\r\n"`                           | `string`                          |
-| `NaNText`      | Text to represent NaN values                             | `""`                               | `string`                          |
+## Why csv-pipe
 
-## Getting Help
+- **Typed columns.** Column names are checked against your data, so a typo is a compile error, not a broken export found in production.
+- **Encodes and parses.** `stringify` and `parse` are mirror images, both typed and streaming, so encode then parse round-trips your data unchanged.
+- **Runs where your code runs.** The core imports no `fs` and no DOM, and streaming returns a Web `ReadableStream`. One import for Node, the browser, Deno, Bun, and edge.
+- **Flat memory, both ways.** Encode and parse stream incrementally, one record at a time, so a file or HTTP body of any size stays at flat memory.
+- **Safe by a flag.** `sanitizeFormulas` neutralizes spreadsheet formula injection, so you never hand-sanitize cells.
+- **Fast and small.** The fastest common parser by a wide margin, and the fastest or on-par encoder, across every [benchmark](https://martsinlabs.github.io/csv-pipe/guide/benchmarks), at under 2 kB per direction with zero dependencies.
 
-If you have questions or encounter any issues, please open an issue on our [GitHub repository](https://github.com/myroslavmartsin/csv-pipe) so we can help you out.
+## Documentation
 
-## Thank you for choosing CSV-Pipe
+The full documentation is at [martsinlabs.github.io/csv-pipe](https://martsinlabs.github.io/csv-pipe/):
 
-We trust it will enhance your data handling capabilities and simplify your CSV conversion tasks.
+- [Getting started](https://martsinlabs.github.io/csv-pipe/guide/getting-started), [Why csv-pipe](https://martsinlabs.github.io/csv-pipe/guide/why), [Comparison](https://martsinlabs.github.io/csv-pipe/guide/comparison), and [Migration](https://martsinlabs.github.io/csv-pipe/guide/migration)
+- Encoding: [columns](https://martsinlabs.github.io/csv-pipe/guide/columns), [formatting](https://martsinlabs.github.io/csv-pipe/guide/formatting), [streaming](https://martsinlabs.github.io/csv-pipe/guide/streaming), and [options](https://martsinlabs.github.io/csv-pipe/guide/options)
+- [Parsing](https://martsinlabs.github.io/csv-pipe/guide/parsing)
+- [TypeScript](https://martsinlabs.github.io/csv-pipe/guide/typescript), [error handling](https://martsinlabs.github.io/csv-pipe/guide/errors), and [security](https://martsinlabs.github.io/csv-pipe/guide/security)
+- [Benchmarks](https://martsinlabs.github.io/csv-pipe/guide/benchmarks) and the [API reference](https://martsinlabs.github.io/csv-pipe/api/)
+
+## Contributing
+
+Contributions are welcome. See [CONTRIBUTING](CONTRIBUTING.md) for setup and conventions, [CODE_OF_CONDUCT](CODE_OF_CONDUCT.md) for community standards, and [SECURITY](SECURITY.md) for reporting vulnerabilities.
+
+## License
+
+[MIT](https://github.com/martsinlabs/csv-pipe/blob/master/LICENSE) © Martsin Labs

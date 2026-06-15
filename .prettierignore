@@ -1,1 +1,7 @@
 dist
+docs/api
+docs/.vitepress/cache
+docs/.vitepress/dist
+coverage
+node_modules
+package-lock.json

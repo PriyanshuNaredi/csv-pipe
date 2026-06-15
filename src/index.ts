@@ -1,3 +1,34 @@
-export * from './generator';
-export * from './downloaders';
-export * from './types';
+/**
+ * The main entry point, imported from `csv-pipe`. Encoding and streaming for
+ * every runtime.
+ *
+ * @module csv-pipe
+ */
+export { createCsvEncoder } from './core/encoder';
+export { createCsvParser } from './core/parser';
+export { parse } from './decode/parse';
+export { stringify } from './encode/stringify';
+export { toReadableStream } from './stream';
+
+export { CsvPipeError } from './errors';
+
+export type {
+  BooleanStyle,
+  CsvCell,
+  CsvColumns,
+  CsvEncoder,
+  CsvFormatContext,
+  CsvFormatter,
+  CsvInput,
+  CsvOptions,
+  CsvParseColumns,
+  CsvParseOptions,
+  CsvParsedValue,
+  CsvParser,
+  CsvPrimitive,
+  CsvRecord,
+  CsvRowContext,
+  CsvRowMapper,
+  CsvSource,
+  QuotingMode
+} from './types';

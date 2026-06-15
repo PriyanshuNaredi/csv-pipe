@@ -1,0 +1,59 @@
+name: Benchmark tracking
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+# Serialize with the docs job, which also pushes to gh-pages.
+concurrency:
+  group: gh-pages
+  cancel-in-progress: false
+
+jobs:
+  track:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm run build
+
+      - name: Measure throughput
+        run: node bench/track.mjs
+
+      - name: Publish to gh-pages and alert on regression
+        uses: benchmark-action/github-action-benchmark@v1
+        with:
+          name: csv-pipe throughput
+          tool: customBiggerIsBetter
+          output-file-path: public/bench-results.json
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          auto-push: true
+          gh-pages-branch: gh-pages
+          benchmark-data-dir-path: bench
+          alert-threshold: '150%'
+          comment-on-alert: true
+          fail-on-alert: true
+
+      - name: Build coverage and size badges
+        run: |
+          npm run coverage
+          npx size-limit --json > size.json
+          node scripts/status-badges.mjs
+
+      - name: Publish badges to gh-pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
+          keep_files: true

@@ -1,0 +1,55 @@
+name: Bug report
+description: Report incorrect output or a crash.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the report. Please do not use this form for security issues;
+        follow the [Security Policy](../security/policy) instead.
+
+  - type: textarea
+    id: summary
+    attributes:
+      label: What happened
+      description: A clear description of the bug and what you expected instead.
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction
+      description: Minimal code that shows the problem, including the input and the output you got.
+      render: ts
+      placeholder: |
+        import { stringify } from 'csv-pipe';
+
+        const csv = stringify([{ a: 1 }]);
+        // expected: ...
+        // actual:   ...
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: csv-pipe version
+      placeholder: 2.0.0
+    validations:
+      required: true
+
+  - type: dropdown
+    id: runtime
+    attributes:
+      label: Runtime
+      multiple: true
+      options:
+        - Node
+        - Browser
+        - Deno
+        - Bun
+        - Edge runtime
+        - Other
+    validations:
+      required: true

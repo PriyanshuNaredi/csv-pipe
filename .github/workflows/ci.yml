@@ -1,0 +1,143 @@
+name: CI
+
+on:
+  push:
+    branches: [master, v2]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # Vitest 4 requires Node 20.12+; Node 18 runtime support is checked by
+        # the node18 job below (build + smoke), which does not run Vitest.
+        node-version: [20, 22, 24]
+    name: Node ${{ matrix.node-version }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+
+      - run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Typecheck examples
+        run: npm run typecheck:examples
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Format check
+        run: npm run format:check
+
+      - name: Test with coverage
+        run: npm run coverage
+
+      - name: Build
+        run: npm run build
+
+      - name: Smoke test (Node)
+        run: npm run smoke
+
+      - name: Check package exports
+        run: npx publint --strict
+
+      - name: Check type resolution
+        run: npx attw --pack .
+
+      - name: Check bundle size
+        run: npx size-limit
+
+  node18:
+    name: Node 18 (runtime)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: npm
+
+      - run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Smoke test (Node)
+        run: npm run smoke
+
+  deno:
+    name: Smoke (Deno)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+
+      - name: Smoke test (Deno)
+        run: deno run --allow-read scripts/smoke.mjs
+
+  bun:
+    name: Smoke (Bun)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Smoke test (Bun)
+        run: bun scripts/smoke.mjs
+
+  bench-gate:
+    name: Benchmark gate (fastest)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Assert csv-pipe leads competitors
+        run: npm run bench:gate

@@ -1,0 +1,13 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "baseUrl": ".",
+    "paths": {
+      "csv-pipe": ["./src/index.ts"],
+      "csv-pipe/node": ["./src/platform/node.ts"],
+      "csv-pipe/browser": ["./src/platform/browser.ts"]
+    }
+  },
+  "include": ["examples"]
+}
