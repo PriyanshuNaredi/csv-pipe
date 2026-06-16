@@ -19,7 +19,7 @@ description: Typed columns, two-way streaming, formula-injection safety, and RFC
   injection (cells starting with `=`, `+`, `-`, `@`, a tab, or a carriage
   return), so you never hand-sanitize cells.
 - **Fast and small.** The fastest common parser by a wide margin, and the
-  fastest or on-par encoder, across every benchmark, at under 2 kB per direction
+  fastest or on-par encoder, across every benchmark, at about 2 kB per direction
   with zero dependencies.
 
 ## A typo never ships
