@@ -105,6 +105,7 @@ export default defineConfig({
     logo: '/logo.svg',
     nav: [
       { text: 'Guide', link: '/guide/getting-started', activeMatch: '/guide/' },
+      { text: 'Playground', link: '/playground' },
       { text: 'API', link: '/api/', activeMatch: '/api/' },
       { text: 'Benchmarks', link: '/guide/benchmarks' },
       {
