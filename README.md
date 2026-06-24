@@ -41,9 +41,23 @@ parse<User>('name,email,age\nAlex Johnson,alex@example.com,29');
 
 The header comes from the record keys, quoting and escaping are correct out of the box, and both directions stream and run in every runtime.
 
+Column names are checked against your data, so a typo cannot reach production:
+
+```ts
+import { stringify } from 'csv-pipe';
+
+type User = { name: string; email: string; age: number };
+const users: User[] = [
+  { name: 'Alex Johnson', email: 'alex@example.com', age: 29 }
+];
+
+stringify(users, { columns: ['name', 'email'] }); // ok
+stringify(users, { columns: ['emial'] }); // compile error: 'emial' is not a key of User
+```
+
 ## Why csv-pipe
 
-- **Typed columns.** Column names are checked against your data, so a typo is a compile error, not a broken export found in production.
+- **Typed columns.** The `columns` list is typed to `keyof T`, so renaming a field turns every stale reference into a compile error.
 - **Encodes and parses.** `stringify` and `parse` are mirror images, both typed and streaming, so encoding then parsing round-trips your rows, with dynamic typing to recover numbers and booleans.
 - **Runs where your code runs.** The core imports no `fs` and no DOM, and streaming returns a Web `ReadableStream`. One import for Node, the browser, Deno, Bun, and edge.
 - **Flat memory.** Parsing streams one record at a time, and encoding does too once the columns are declared, so a file or an HTTP body of any size stays at flat memory.
