@@ -1,5 +1,8 @@
 ---
 layout: home
+title: 'csv-pipe: typed CSV parser and encoder for TypeScript'
+titleTemplate: false
+description: 'csv-pipe is a typed, zero-dependency CSV parser and encoder for TypeScript and JavaScript. Read and write RFC 4180 CSV in both directions, with streaming, on Node, browsers, Deno, Bun, and edge. A faster papaparse alternative.'
 
 hero:
   text: Typed CSV, encode and parse, for every runtime
