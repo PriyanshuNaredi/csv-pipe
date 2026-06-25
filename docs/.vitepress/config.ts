@@ -54,6 +54,13 @@ export default defineConfig({
       { rel: 'icon', type: 'image/svg+xml', href: '/csv-pipe/favicon.svg' }
     ],
     ['meta', { name: 'theme-color', content: '#3c7d3a' }],
+    [
+      'meta',
+      {
+        name: 'google-site-verification',
+        content: 'HJDY27m71UWItOMPrrHe1p4sr3lMRobZcFXKbE7-6gE'
+      }
+    ],
     ['meta', { property: 'og:type', content: 'website' }],
     ['meta', { property: 'og:title', content: 'csv-pipe' }],
     [
